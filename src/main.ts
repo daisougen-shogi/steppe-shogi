@@ -4,6 +4,7 @@ import {app, BrowserWindow, Menu} from "electron";
 import * as url from "url";
 import {createMenu} from "./menu";
 import {Config, loadConfig} from "./config";
+import Kifu from "./Kifu";
 
 let mainWindow: BrowserWindow;
 let menu: Menu;
@@ -42,6 +43,9 @@ function createWindow(baseDir: string, config: Config) {
     })
   );
 
+  const kifu = new Kifu();
+  kifu.wakeup(mainWindow.webContents);
+
   if (process.env.NODE_ENV === "development") {
     mainWindow.webContents.once("devtools-opened", () => setImmediate(() => mainWindow.focus()));
     mainWindow.webContents.openDevTools({mode: "detach"});
@@ -69,7 +73,7 @@ app.once("ready", async () => {
   const config = await loadConfig(baseDir);
   try {
     createWindow(baseDir, config);
-    menu = createMenu();
+    menu = createMenu(mainWindow);
   } catch (e) {
     console.error("Unknown error: ", e);
     app.quit();

@@ -1,13 +1,12 @@
 {
-  "name": "steppe-shougi",
+  "name": "steppe-shogi",
   "version": "0.0.1",
   "description": "大草原将棋",
   "main": "dist/main.js",
   "scripts": {
     "prepare": "npm run build",
     "build": "webpack --progress",
-    "assets:copy": "shx cp ./images/icon.png ./dist && shx cp ./src/index.html ./dist && shx cp ./src/config.json ./dist/config.json",
-    "start": "npm run build && npm run assets:copy && electron .",
+    "start": "npm run build && electron .",
     "precommit": "lint-staged",
     "postcommit": "git reset"
   },
@@ -15,9 +14,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pocketberserker/steppe-shougi"
+    "url": "https://github.com/pocketberserker/steppe-shogi"
   },
   "dependencies": {
+    "json-kifu-format": "^1.2.1",
     "mobx": "^4.2.0",
     "mobx-react": "^5.1.2",
     "react": "^16.3.2",
@@ -27,12 +27,12 @@
     "@types/node": "^10.0.2",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
+    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "electron": "^1.8.6",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.5",
     "prettier": "^1.12.1",
-    "shx": "^0.2.2",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.2.0",
     "typescript": "2.8.3",

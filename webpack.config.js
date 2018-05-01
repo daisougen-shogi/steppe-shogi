@@ -1,5 +1,6 @@
 var webpack = require("webpack");
 var path = require("path");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 var srcDir = path.join(__dirname, "src");
 var outDir = path.join(__dirname, "dist");
@@ -38,7 +39,27 @@ var config = {
   devtool: "source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
-  }
+  },
+  plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: path.join(srcDir, "images"),
+        to: path.join(outDir, "images")
+      },
+      {
+        from: path.join(srcDir, "index.html"),
+        to: path.join(outDir, "index.html")
+      },
+      {
+        from: path.join(srcDir, "config.json"),
+        to: path.join(outDir, "config.json")
+      },
+      {
+        from: path.join(__dirname, "images", "icon.png"),
+        to: path.join(outDir, "icon.png")
+      }
+    ])
+  ]
 };
 
 module.exports = [
@@ -55,6 +76,7 @@ module.exports = [
     }
   }),
   Object.assign({}, config, {
+    target: "electron-renderer",
     entry: {
       preload: "./src/preload.ts",
     }
