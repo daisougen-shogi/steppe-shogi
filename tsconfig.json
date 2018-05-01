@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
     "noLib": false,
     "sourceMap": false,
     "noImplicitReturns": true,
@@ -10,11 +10,9 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["es6", "dom"],
-    "outDir": "./dist"
+    "lib": ["es6", "dom"]
   },
-  "files": [
-    "./src/main.ts",
-    "./src/preload.ts"
+  "include": [
+    "./src/**/*"
   ]
 }

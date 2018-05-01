@@ -7,6 +7,7 @@ import {Config, loadConfig} from "./config";
 
 let mainWindow: BrowserWindow;
 let menu: Menu;
+const isProd = process.env.NODE_ENV === "production";
 
 const urlPattern = new RegExp("^https?:$");
 
@@ -19,20 +20,27 @@ function createWindow(baseDir: string, config: Config) {
     show: false,
     resizable: false,
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: false,
       preload: path.join(baseDir, "preload.js")
     }
   });
 
+  if (isProd === false) {
+    mainWindow.webContents.openDevTools();
+  }
+
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
   });
 
-  mainWindow.loadURL(url.format({
-    pathname: path.join(baseDir, "index.html"),
-    protocol: "file:",
-    slashes: true
-  }));
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(baseDir, "index.html"),
+      protocol: "file:",
+      slashes: true
+    })
+  );
 
   if (process.env.NODE_ENV === "development") {
     mainWindow.webContents.once("devtools-opened", () => setImmediate(() => mainWindow.focus()));
@@ -47,7 +55,7 @@ function createWindow(baseDir: string, config: Config) {
 app.on("browser-window-created", (event, window) => {
   window.webContents.on("new-window", (event, targetUrl, frameName, disposition, options) => {
     const protocol = url.parse(targetUrl).protocol;
-    if(protocol === undefined) {
+    if (protocol === undefined) {
       throw new Error("undefined protocol:" + url);
     } else if (urlPattern.test(protocol) === false) {
       event.preventDefault();
@@ -57,14 +65,14 @@ app.on("browser-window-created", (event, window) => {
 });
 
 app.once("ready", async () => {
-  const baseDir = __dirname;
+  const baseDir = isProd ? process.resourcesPath : __dirname;
   const config = await loadConfig(baseDir);
   try {
     createWindow(baseDir, config);
     menu = createMenu();
-  } catch(e) {
-      console.error("Unknown error: ", e);
-      app.quit();
+  } catch (e) {
+    console.error("Unknown error: ", e);
+    app.quit();
   }
 });
 
