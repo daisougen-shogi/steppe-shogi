@@ -1,0 +1,47 @@
+{
+  "name": "steppe-shougi",
+  "version": "0.0.1",
+  "description": "大草原将棋",
+  "main": "dist/main.js",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "assets:copy": "shx cp ./images/icon.png ./dist && shx cp ./index.html ./dist",
+    "start": "npm run build && npm run assets:copy && electron ./dist/main.js",
+    "precommit": "lint-staged",
+    "postcommit": "git reset"
+  },
+  "author": "pocketberserker",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pocketberserker/steppe-shougi"
+  },
+  "dependencies": {
+    "mobx": "^4.2.0",
+    "mobx-react": "^5.1.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.0.2",
+    "@types/react": "^16.3.13",
+    "@types/react-dom": "^16.0.5",
+    "electron": "^1.8.6",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1",
+    "shx": "^0.2.2",
+    "typescript": "2.8.3"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "bracketSpacing": false
+  },
+  "lint-staged": {
+    "*.{ts, js, json}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
