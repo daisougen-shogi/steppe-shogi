@@ -5,7 +5,11 @@ export const createMenu = (mainWindow: Electron.BrowserWindow) => {
   const fileSubmenu: MenuItemConstructorOptions[] = [
     {
       label: "棋譜ファイルを開く",
-      click: () => mainWindow.webContents.send("shogi:choose-file")
+      click: () => mainWindow.webContents.send("shogi:choose-kifu")
+    },
+    {
+      label: "棋譜を保存する",
+      click: () => mainWindow.webContents.send("shogi:save-kifu")
     }
   ];
 

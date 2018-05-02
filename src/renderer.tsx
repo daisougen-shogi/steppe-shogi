@@ -36,11 +36,30 @@ const chooseKifuFile = () => {
   w.ipc.send("kifu:load", paths[0]);
 };
 
-w.ipc.on("shogi:choose-file", () => chooseKifuFile());
+const chooseSaveFile = () => {
+  const filters = [
+    {
+      name: "JKF",
+      extensions: ["jkf"]
+    }
+  ];
+  const path = w.remote.dialog.showSaveDialog({
+    title: "保存するファイルを選択してください",
+    filters
+  });
+  if (!path) {
+    return;
+  }
+  w.ipc.send("kifu:save", path, kifuStore.player.toJKF());
+};
+
+w.ipc.on("shogi:choose-kifu", () => chooseKifuFile());
 
 w.ipc.on("shogi:apply-kifu", (_: any, kifu: string, path: string) =>
   kifuStore.parse(kifu, path)
 );
+
+w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
 
 ReactDOM.render(
   <Provider {...stores}>

@@ -13,8 +13,13 @@ export default class Kifu {
 
   wakeup(sender: Electron.WebContents) {
     this.sender = sender;
+
     ipc.on("kifu:load", (_: any, path: string) => {
       this.load(path);
+    });
+
+    ipc.on("kifu:save", (_: any, path: string, kifu: string) => {
+      this.save(path, kifu);
     });
   }
 
@@ -23,5 +28,11 @@ export default class Kifu {
     const kifu = fs.readFileSync(path, "utf8");
     this.path = path;
     this.sender.send("shogi:apply-kifu", kifu, path);
+  }
+
+  private save(path: string, kifu: string) {
+    // TODO: エラーを掴んでrendererに表示する
+    fs.writeFileSync(path, kifu, "utf8");
+    this.path = path;
   }
 }
