@@ -1,19 +1,21 @@
-import { observer } from "mobx-react";
+"use strict";
+import {inject, observer} from "mobx-react";
 import * as React from "react";
 import {JKFPlayer} from "json-kifu-format";
 import KifuStore from "../stores/KifuStore";
 import Piece from "./Piece";
 
 export interface BoardProps {
-  kifuStore: KifuStore
+  kifuStore?: KifuStore
 }
 
+@inject("kifuStore")
 @observer
 export default class Board extends React.Component<BoardProps, {}> {
-  
+
   private nineY = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   private nineX = this.nineY.slice().reverse();
-  
+
   render() {
     const {player} = this.props.kifuStore;
     const board = player.getState().board;

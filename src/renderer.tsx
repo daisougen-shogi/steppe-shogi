@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "mobx-react";
 import {Remote, IpcRenderer} from "electron";
-import Board from "./components/Board";
+import Shogi from "./components/Shogi";
 import KifuStore from "./stores/KifuStore";
 
 const kifuStore = new KifuStore();
@@ -63,7 +63,7 @@ w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
 
 ReactDOM.render(
   <Provider {...stores}>
-    <Board kifuStore={kifuStore} />
+    <Shogi />
   </Provider>,
   document.getElementById("app")
 );
