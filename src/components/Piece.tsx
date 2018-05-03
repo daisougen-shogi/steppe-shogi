@@ -5,6 +5,7 @@ import {DragSource, DropTarget} from "react-dnd";
 import {Color} from "shogi.js";
 import {Formats} from "json-kifu-format";
 import KifuStore from "../stores/KifuStore";
+import {getPieceImageUrl} from "../image";
 
 export interface PieceProps {
   data: Formats.IPiece;
@@ -45,7 +46,7 @@ export interface PieceProps {
   }
 )
 @DropTarget(
-  ["piece"],
+  ["piece", "capturedpiece"],
   {
     drop(props: PieceProps, monitor, component) {
       return { x: props.x, y: props.y };
@@ -74,11 +75,5 @@ export default class Piece extends React.Component<PieceProps, any> {
 }
 
 const getPieceImage = (props: PieceProps) => {
-  const piece = props.data;
-  if(piece && piece.kind) {
-    // TODO: implement
-    return "images/dummy.png";
-  } else {
-    return "images/blank.png";
-  }
+  return getPieceImageUrl(props.data);
 }

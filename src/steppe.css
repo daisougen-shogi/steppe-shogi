@@ -10,17 +10,50 @@
 .steppe table.ban td {
   border: 1px #000000 solid;
   background-color: #FDD775;
-  /*
-  バランの色
-  background-color: #36af46;
-  */
   padding: 0px;
 }
 .steppe table.ban td,
-.steppe table.ban td img {
+.steppe table.ban td img,
+.steppe div.hand span.capturedpiece img {
   padding: 0;
   border-spacing: 0;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   vertical-align: middle;
+}
+
+.steppe div.hand {
+  height: 180px;
+  width: 160px;
+}
+
+.steppe div.hand div.name {
+  text-align: center;
+  /*
+  バランの色
+  */
+  background-color: #36af46;
+  margin-bottom: 0;
+  margin-top: auto;
+  width: 100%;
+}
+
+.steppe div.hand div.box {
+  display: inline-block;
+  background-color: #FDD775;
+  padding: 2px;
+}
+
+.steppe div.hand span.capturedpiece {
+  display: inline-block;
+  position: relative;
+  width: 52px;
+  height: 50px;
+}
+
+.steppe div.hand span.capturedpiece span.value {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 22px;
 }
