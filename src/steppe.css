@@ -1,0 +1,26 @@
+.steppe table.ban {
+  border-collapse: collapse;
+}
+.steppe table.ban th {
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.steppe table.ban td {
+  border: 1px #000000 solid;
+  background-color: #FDD775;
+  /*
+  バランの色
+  background-color: #36af46;
+  */
+  padding: 0px;
+}
+.steppe table.ban td,
+.steppe table.ban td img {
+  padding: 0;
+  border-spacing: 0;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}

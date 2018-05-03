@@ -8,6 +8,8 @@ import {NativeTypes} from "react-dnd-html5-backend";
 import KifuStore from "../stores/KifuStore";
 import Board from "./Board";
 
+import "../steppe.css";
+
 export interface KifuProps {
   kifuStore?: KifuStore;
   connectDropTarget?: (obj: any) => any;
@@ -34,7 +36,7 @@ class Kifu extends React.Component<KifuProps, {}> {
 
   render(): React.ReactNode {
     return this.props.connectDropTarget(
-      <div>
+      <div className="steppe" >
         <Board kifuStore={this.props.kifuStore} />
       </div>
     )
