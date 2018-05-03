@@ -77,3 +77,8 @@
   overflow: scroll;
   font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
 }
+
+.steppe div.graph {
+  width: 400px;
+  height: 600px;
+}

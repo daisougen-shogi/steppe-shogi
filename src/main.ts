@@ -5,9 +5,10 @@ import * as url from "url";
 import {createMenu} from "./menu";
 import {Config, loadConfig} from "./config";
 import Kifu from "./Kifu";
+import Engine from "./Engine";
 
 let mainWindow: BrowserWindow;
-let menu: Menu;
+let engine: Engine;
 const isProd = process.env.NODE_ENV === "production";
 
 const urlPattern = new RegExp("^https?:$");
@@ -43,6 +44,8 @@ function createWindow(baseDir: string, config: Config) {
     })
   );
 
+  engine.wakeup(mainWindow.webContents);
+
   const kifu = new Kifu();
   kifu.wakeup(mainWindow.webContents);
 
@@ -70,16 +73,24 @@ app.on("browser-window-created", (event, window) => {
 
 app.once("ready", async () => {
   const baseDir = isProd ? process.resourcesPath : __dirname;
-  const config = await loadConfig(baseDir);
   try {
+    const config = await loadConfig(baseDir);
+    (global as any).config = config;
+    engine = new Engine(config.engines);
     createWindow(baseDir, config);
-    menu = createMenu(mainWindow);
+    createMenu(mainWindow);
   } catch (e) {
     console.error("Unknown error: ", e);
+    if (engine) {
+      engine.close();
+    }
     app.quit();
   }
 });
 
 app.once("window-all-closed", () => {
+  if (engine) {
+    engine.close();
+  }
   app.quit();
 });

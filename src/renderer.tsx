@@ -4,6 +4,9 @@ import {Provider} from "mobx-react";
 import {Remote, IpcRenderer} from "electron";
 import Shogi from "./components/Shogi";
 import KifuStore from "./stores/KifuStore";
+import EngineStore from "./stores/EngineStore";
+import ScoreStore from "./stores/ScoreStore";
+import {Config} from "./config";
 
 interface Electron {
   remote: Remote;
@@ -11,10 +14,16 @@ interface Electron {
 }
 const w = (window as Window & Electron);
 
+const config = w.remote.getGlobal("config") as Config;
+
 const kifuStore = new KifuStore(w.ipc);
+const engineStore = new EngineStore(w.ipc);
+const scoreStore = new ScoreStore(config.engines);
 
 const stores = {
-  kifuStore
+  kifuStore,
+  engineStore,
+  scoreStore
 };
 
 const chooseKifuFile = () => {
@@ -59,6 +68,12 @@ w.ipc.on("shogi:apply-kifu", (_: any, kifu: string, path: string) =>
 );
 
 w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
+
+w.ipc.on("engine:response", (_: any, response: string) => {
+  engineStore.apply(response);
+});
+
+engineStore.usi();
 
 ReactDOM.render(
   <Provider {...stores}>

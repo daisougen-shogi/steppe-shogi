@@ -9,6 +9,7 @@ import KifuStore from "../stores/KifuStore";
 import Hand from "./Hand";
 import Board from "./Board";
 import List from "./List";
+import Engines from "./Engines";
 
 import "../steppe.css";
 
@@ -55,6 +56,11 @@ class Kifu extends React.Component<KifuProps, {}> {
                 <div className="inlineblock players">
                   <Hand kifuStore={this.props.kifuStore} defaultColor={0} />
                 </div>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={3} style={{ textAlign: "center" }}>
+                <Engines />
               </td>
             </tr>
           </tbody>

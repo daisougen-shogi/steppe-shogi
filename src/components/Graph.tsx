@@ -1,46 +1,22 @@
 "use strict";
-import {observer} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import * as React from "react";
 import {Line} from "react-chartjs-2";
+import ScoreStore from "../stores/ScoreStore";
 
 export interface GraphProps {
+  scoreStore?: ScoreStore
 }
 
-const data = {
-  datasets: [
-    {
-      label: "将棋エンジン",
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: "rgba(75, 192, 192, 1)",
-      borderColor: 'rgba(75, 192, 192, 1)',
-      data: [
-        {
-          x: 0,
-          y: 0
-        },
-        {
-          x: 1,
-          y: 65
-        }
-      ]
-    }
-  ]
-};
-
-const style = {
-  width: 400,
-  height: 600
-}
-
+@inject("scoreStore")
 @observer
 export default class Graph extends React.Component<GraphProps, {}> {
 
   render() {
     return (
-      <div style={style} >
+      <div className="graph" >
         <Line
-          data={data}
+          data={this.props.scoreStore.data}
           options={{
             responsive: true,
             animation: {

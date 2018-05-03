@@ -3,9 +3,16 @@ import {promisify} from "util";
 import * as path from "path";
 import * as fs from "fs";
 
+export interface EngineConfig {
+  name: string;
+  path: string;
+  color: string;
+}
+
 export interface Config {
   width: number;
   height: number;
+  engines: EngineConfig[];
 }
 
 export const loadConfig = async (targetDir: string) => {

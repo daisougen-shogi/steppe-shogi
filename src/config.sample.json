@@ -1,0 +1,11 @@
+{
+  "width": 1280,
+  "height": 720,
+  "engines": [
+    {
+      "name": "将棋エンジン",
+      "path": "/path/to/engine.exe",
+      "color": "rgba(75, 192, 192, 1)"
+    }
+  ]
+}
