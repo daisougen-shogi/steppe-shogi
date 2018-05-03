@@ -6,22 +6,21 @@ import KifuStore from "../stores/KifuStore";
 import Piece from "./Piece";
 
 export interface BoardProps {
-  kifuStore?: KifuStore
+  kifuStore: KifuStore
 }
 
-@inject("kifuStore")
+const nineY = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const nineX = nineY.slice().reverse();
+
 @observer
 export default class Board extends React.Component<BoardProps, {}> {
-
-  private nineY = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  private nineX = this.nineY.slice().reverse();
 
   render() {
     const {player} = this.props.kifuStore;
     const board = player.getState().board;
 
-    const trs = this.nineY.map(y => {
-      const pieces = this.nineX.map(x =>
+    const trs = nineY.map(y => {
+      const pieces = nineX.map(x =>
         <Piece
            key={x}
            data={board[x - 1][y - 1]}
@@ -41,7 +40,7 @@ export default class Board extends React.Component<BoardProps, {}> {
     return (
       <table className="ban">
         <tbody>
-          <tr>{ this.nineX.map(x => <th key={x}>{x}</th>) }</tr>
+          <tr>{ nineX.map(x => <th key={x}>{x}</th>) }</tr>
           {trs}
         </tbody>
       </table>

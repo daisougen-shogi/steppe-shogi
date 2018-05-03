@@ -10,7 +10,7 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["es6", "dom"]
+    "lib": ["es2015", "dom"]
   },
   "include": [
     "./src/**/*"

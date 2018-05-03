@@ -70,7 +70,7 @@ module.exports = [
     }
   }),
   Object.assign({}, config, {
-    target: "electron-renderer",
+    target: "web",
     entry: {
       renderer: "./src/renderer.tsx",
     }

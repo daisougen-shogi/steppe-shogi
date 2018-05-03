@@ -5,18 +5,17 @@ import {Remote, IpcRenderer} from "electron";
 import Shogi from "./components/Shogi";
 import KifuStore from "./stores/KifuStore";
 
-const kifuStore = new KifuStore();
-
-const stores = {
-  kifuStore
-};
-
 interface Electron {
   remote: Remote;
   ipc: IpcRenderer;
 }
-
 const w = (window as Window & Electron);
+
+const kifuStore = new KifuStore(w.ipc);
+
+const stores = {
+  kifuStore
+};
 
 const chooseKifuFile = () => {
   const filters = [

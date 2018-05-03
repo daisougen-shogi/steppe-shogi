@@ -1,39 +1,84 @@
 "use strict";
 import {observer} from "mobx-react";
 import * as React from "react";
+import {DragSource, DropTarget} from "react-dnd";
 import {Color} from "shogi.js";
+import {Formats} from "json-kifu-format";
 import KifuStore from "../stores/KifuStore";
 
 export interface PieceProps {
-  data: {
-    color?: Color;
-    kind?: string
-  };
+  data: Formats.IPiece;
   x: number;
   y: number;
   kifuStore: KifuStore;
+  connectDropTarget?: (obj: any) => Element;
+  connectDragSource?: (obj: any) => Element;
+  isDragging?: boolean;
 }
 
 @observer
-export default class Piece extends React.Component<PieceProps, {}> {
+@DragSource(
+  "piece",
+  {
+    beginDrag(props: PieceProps, monitor, component) {
+      return {
+        x: props.x,
+        y: props.y,
+        imgSrc: getPieceImage(props),
+        signature: props.kifuStore.signature
+      };
+    },
+    endDrag(props: PieceProps, monitor, component) {
+      props.kifuStore.onMove({
+        color: props.data.color,
+        piece: props.data.kind,
+        from: monitor.getItem() as Formats.IPlaceFormat,
+        to: monitor.getDropResult() as Formats.IPlaceFormat
+      });
+    }
+  },
+  function collect(connect, monitor) {
+    return {
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging(),
+    };
+  }
+)
+@DropTarget(
+  ["piece"],
+  {
+    drop(props: PieceProps, monitor, component) {
+      return { x: props.x, y: props.y };
+    },
+  },
+  (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget()
+  })
+)
+export default class Piece extends React.Component<PieceProps, any> {
 
-  render() {
+  render(): React.ReactNode {
     return (
       <td>
-        <div>
-          <img src={this.getPieceImage(this.props)} />
-        </div>
+        { this.props.connectDropTarget(
+            this.props.connectDragSource(
+              <div>
+                <img src={getPieceImage(this.props)} style={{ opacity: this.props.isDragging ? 0.4 : 1 }} />
+              </div>
+            )
+          )
+        }
       </td>
     );
   }
+}
 
-  private getPieceImage(props: PieceProps) {
-    const piece = props.data;
-    if(piece && piece.kind) {
-      // TODO: implement
-      return "images/dummy.png";
-    } else {
-      return "images/blank.png";
-    }
+const getPieceImage = (props: PieceProps) => {
+  const piece = props.data;
+  if(piece && piece.kind) {
+    // TODO: implement
+    return "images/dummy.png";
+  } else {
+    return "images/blank.png";
   }
 }
