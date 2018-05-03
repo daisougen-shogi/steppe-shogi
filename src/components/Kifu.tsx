@@ -8,6 +8,7 @@ import {NativeTypes} from "react-dnd-html5-backend";
 import KifuStore from "../stores/KifuStore";
 import Hand from "./Hand";
 import Board from "./Board";
+import List from "./List";
 
 import "../steppe.css";
 
@@ -42,13 +43,18 @@ class Kifu extends React.Component<KifuProps, {}> {
           <tbody>
             <tr>
               <td>
-                <Hand kifuStore={this.props.kifuStore} defaultColor={1} />
+                <div className="inlineblock players">
+                  <Hand kifuStore={this.props.kifuStore} defaultColor={1} />
+                  <List player={this.props.kifuStore.player} />
+                </div>
               </td>
               <td>
                 <Board kifuStore={this.props.kifuStore} />
               </td>
               <td>
-                <Hand kifuStore={this.props.kifuStore} defaultColor={0} />
+                <div className="inlineblock players">
+                  <Hand kifuStore={this.props.kifuStore} defaultColor={0} />
+                </div>
               </td>
             </tr>
           </tbody>

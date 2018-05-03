@@ -39,5 +39,5 @@ export default class Hand extends React.Component<HandProps, any> {
 }
 
 export function toMark(color: Color) {
-  return color === Color.Black ? "▲" : "△";
+  return color === Color.Black ? "☗" : "☖";;
 }
