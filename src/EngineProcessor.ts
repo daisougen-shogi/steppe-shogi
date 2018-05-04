@@ -26,6 +26,10 @@ export default class EngineProcessor {
       this.init();
     });
 
+    ipc.on("engine:ready", async (_: any, id: string) => {
+      this.ready(id);
+    });
+
     ipc.on("engine:command", async (_: any, command: string) => {
       this.send(command);
     });
@@ -48,5 +52,11 @@ export default class EngineProcessor {
       await p.init();
       this.sender.send("engine:response", id, {type: "usiok"});
     }
+  }
+
+  private async ready(id: string) {
+    const [_, p] = this.processes.find(([i, _]) => i === id);
+    await p.ready();
+    this.sender.send("engine:response", id, {type: "readyok"});
   }
 }

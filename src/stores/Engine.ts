@@ -2,6 +2,7 @@
 import {observable, computed} from "mobx";
 import * as protocol from "../USIProtocol";
 import {EngineConfig} from "../config";
+import {usiok, readyok, unknown} from "../constants";
 
 export default class Engine {
   readonly id: string;
@@ -25,9 +26,11 @@ export default class Engine {
   @computed
   get status(): string {
     switch (this._state.type) {
-      case "usiok":
+      case usiok:
         return "起動";
-      case "unknown":
+      case readyok:
+        return "準備完了";
+      case unknown:
         return "Unknown";
     }
   }
