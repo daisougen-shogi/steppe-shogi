@@ -14,17 +14,12 @@ export default class EnginesStore {
     this.engines = configs.map(c => new Engine(c));
   }
 
-  apply(id: string, response: string[]) {
+  apply(id: string, response: protocol.USIProtocol) {
     const engine = this.engines.find(e => e.id === id);
-    if (response.find(res => res.startsWith("usiok"))) {
-      engine.state = {
-        type: "usiok"
-      };
-    }
+    engine.state = response;
   }
 
   usi() {
-    // USIエンジン起動時に最初に送るコマンド
-    this.ipc.send("engine:command", "usi");
+    this.ipc.send("engine:usi");
   }
 }

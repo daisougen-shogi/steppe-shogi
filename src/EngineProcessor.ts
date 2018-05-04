@@ -1,13 +1,13 @@
 "use strict";
 import {ipcMain as ipc} from "electron";
-import {spawn} from "spawn-rx";
 import {Observable, Subject, Subscription} from "rxjs";
 import {dirname, basename} from "path";
+import USI from "../node_usi/src/index";
 import {EngineConfig} from "./config";
 
 export default class EngineProcessor {
   private sender: Electron.WebContents;
-  private subscription: Subscription;
+  private processes: [string, USI][];
   private input: Subject<string>;
 
   constructor() {
@@ -17,28 +17,36 @@ export default class EngineProcessor {
   wakeup(sender: Electron.WebContents, configs: EngineConfig[]) {
     this.sender = sender;
 
-    const ps = configs.map(config => {
+    this.processes = configs.map<[string, USI]>(config => {
       const cwd = dirname(config.path);
-      return spawn(config.path, [], {
-        cwd,
-        stdin: this.input
-      }).map<string, [string, string[]]>(res => [config.id, res.split("\n").filter(c => c !== "\n" && c !== "")]);
-    });
-    this.subscription = Observable.merge(...ps).subscribe(([id, response]) => {
-      this.sender.send("engine:response", id, response);
+      return [config.id, USI.connect(config.path, [], {cwd})];
     });
 
-    ipc.on("engine:command", (_: any, command: string) => {
+    ipc.on("engine:usi", async () => {
+      this.init();
+    });
+
+    ipc.on("engine:command", async (_: any, command: string) => {
       this.send(command);
     });
   }
 
-  send(command: string) {
-    this.input.next(`${command}\n`);
+  async send(command: string) {
+    for (const [id, p] of this.processes) {
+      await p.write(command);
+    }
   }
 
   close() {
-    this.input.unsubscribe();
-    this.subscription.unsubscribe();
+    for (const [_, p] of this.processes) {
+      p.kill();
+    }
+  }
+
+  private async init() {
+    for (const [id, p] of this.processes) {
+      await p.init();
+      this.sender.send("engine:response", id, {type: "usiok"});
+    }
   }
 }

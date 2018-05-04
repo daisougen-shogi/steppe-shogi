@@ -7,6 +7,7 @@ import KifuStore from "./stores/KifuStore";
 import EnginesStore from "./stores/EnginesStore";
 import ScoreStore from "./stores/ScoreStore";
 import {Config} from "./config";
+import {USIProtocol} from "./USIProtocol";
 
 interface Electron {
   remote: Remote;
@@ -69,7 +70,7 @@ w.ipc.on("shogi:apply-kifu", (_: any, kifu: string, path: string) =>
 
 w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
 
-w.ipc.on("engine:response", (_: any, id: string, response: string[]) => {
+w.ipc.on("engine:response", (_: any, id: string, response: USIProtocol) => {
   enginesStore.apply(id, response);
 });
 
