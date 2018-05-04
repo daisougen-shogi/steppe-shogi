@@ -23,15 +23,15 @@ export default class EngineProcessor {
     });
 
     ipc.on("engine:usi", async () => {
-      this.init();
+      await this.init();
     });
 
     ipc.on("engine:ready", async (_: any, id: string) => {
-      this.ready(id);
+      await this.ready(id);
     });
 
     ipc.on("engine:command", async (_: any, command: string) => {
-      this.send(command);
+      await this.send(command);
     });
   }
 
