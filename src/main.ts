@@ -44,7 +44,7 @@ function createWindow(baseDir: string, config: Config) {
     })
   );
 
-  engine.wakeup(mainWindow.webContents, config.engines);
+  engine.wakeup(mainWindow.webContents);
 
   const kifu = new Kifu();
   kifu.wakeup(mainWindow.webContents);
@@ -76,7 +76,7 @@ app.once("ready", async () => {
   try {
     const config = await loadConfig(baseDir);
     (global as any).config = config;
-    engine = new EngineProcessor();
+    engine = new EngineProcessor(config.engines);
     createWindow(baseDir, config);
     createMenu(mainWindow);
   } catch (e) {
