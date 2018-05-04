@@ -78,6 +78,15 @@
   font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
 }
 
+.steppe div.engines {
+  width: 100%;
+  display: flex;
+}
+
+.steppe div.engines div.engine {
+  width: 180px;
+}
+
 .steppe div.graph {
   width: 400px;
   height: 600px;

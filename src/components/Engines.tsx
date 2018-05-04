@@ -1,20 +1,20 @@
 "use strict";
 import {inject, observer} from "mobx-react";
 import * as React from "react";
-import EngineStore from "../stores/EngineStore";
+import EnginesStore from "../stores/EnginesStore";
+import Engine from "./Engine";
 
-export interface EngineProps {
-  engineStore?: EngineStore
+export interface EnginesProps {
+  enginesStore?: EnginesStore
 }
 
-@inject("engineStore")
-@observer
-export default class Engine extends React.Component<EngineProps, {}> {
+@inject("enginesStore")
+export default class Engines extends React.Component<EnginesProps, {}> {
 
   render() {
     return (
-      <div>
-        <p>{this.props.engineStore.response}</p>
+      <div className="engines" >
+        {this.props.enginesStore.engines.map(e => <Engine key={e.id} engine={e} />)}
       </div>
     );
   }

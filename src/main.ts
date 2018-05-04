@@ -5,10 +5,10 @@ import * as url from "url";
 import {createMenu} from "./menu";
 import {Config, loadConfig} from "./config";
 import Kifu from "./Kifu";
-import Engine from "./Engine";
+import EngineProcessor from "./EngineProcessor";
 
 let mainWindow: BrowserWindow;
-let engine: Engine;
+let engine: EngineProcessor;
 const isProd = process.env.NODE_ENV === "production";
 
 const urlPattern = new RegExp("^https?:$");
@@ -76,7 +76,7 @@ app.once("ready", async () => {
   try {
     const config = await loadConfig(baseDir);
     (global as any).config = config;
-    engine = new Engine();
+    engine = new EngineProcessor();
     createWindow(baseDir, config);
     createMenu(mainWindow);
   } catch (e) {

@@ -5,9 +5,9 @@ import {Observable, Subject, Subscription} from "rxjs";
 import {dirname, basename} from "path";
 import {EngineConfig} from "./config";
 
-export default class Engine {
+export default class EngineProcessor {
   private sender: Electron.WebContents;
-  private subscriptions: Subscription[];
+  private subscription: Subscription;
   private input: Subject<string>;
 
   constructor() {
@@ -17,14 +17,15 @@ export default class Engine {
   wakeup(sender: Electron.WebContents, configs: EngineConfig[]) {
     this.sender = sender;
 
-    this.subscriptions = configs.map(config => {
+    const ps = configs.map(config => {
       const cwd = dirname(config.path);
       return spawn(config.path, [], {
         cwd,
         stdin: this.input
-      }).subscribe(response => {
-        this.sender.send("engine:response", response);
-      });
+      }).map<string, [string, string[]]>(res => [config.id, res.split("\n").filter(c => c !== "\n" && c !== "")]);
+    });
+    this.subscription = Observable.merge(...ps).subscribe(([id, response]) => {
+      this.sender.send("engine:response", id, response);
     });
 
     ipc.on("engine:command", (_: any, command: string) => {
@@ -38,8 +39,6 @@ export default class Engine {
 
   close() {
     this.input.unsubscribe();
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
 }

@@ -3,6 +3,7 @@
   "height": 720,
   "engines": [
     {
+      "id": "1",
       "name": "将棋エンジン",
       "path": "/path/to/engine.exe",
       "color": "rgba(75, 192, 192, 1)"
