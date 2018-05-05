@@ -5,7 +5,6 @@ import {Remote, IpcRenderer} from "electron";
 import Shogi from "./components/Shogi";
 import KifuStore from "./stores/KifuStore";
 import EnginesStore from "./stores/EnginesStore";
-import ScoreStore from "./stores/ScoreStore";
 import {Config} from "./config";
 import {USIProtocol} from "./USIProtocol";
 
@@ -19,12 +18,10 @@ const config = w.remote.getGlobal("config") as Config;
 
 const kifuStore = new KifuStore(w.ipc);
 const enginesStore = new EnginesStore(w.ipc, config.engines);
-const scoreStore = new ScoreStore(config.engines);
 
 const stores = {
   kifuStore,
-  enginesStore,
-  scoreStore
+  enginesStore
 };
 
 const chooseKifuFile = () => {
@@ -71,7 +68,7 @@ w.ipc.on("shogi:apply-kifu", (_: any, kifu: string, path: string) =>
 w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
 
 w.ipc.on("engine:response", (_: any, id: string, response: USIProtocol) => {
-  enginesStore.apply(id, response);
+  enginesStore.apply(id, response, kifuStore.player.tesuu);
 });
 
 enginesStore.usi();

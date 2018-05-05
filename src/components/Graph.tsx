@@ -2,13 +2,13 @@
 import {inject, observer} from "mobx-react";
 import * as React from "react";
 import {Line} from "react-chartjs-2";
-import ScoreStore from "../stores/ScoreStore";
+import EnginesStore from "../stores/EnginesStore";
 
 export interface GraphProps {
-  scoreStore?: ScoreStore
+  enginesStore?: EnginesStore
 }
 
-@inject("scoreStore")
+@inject("enginesStore")
 @observer
 export default class Graph extends React.Component<GraphProps, {}> {
 
@@ -16,7 +16,7 @@ export default class Graph extends React.Component<GraphProps, {}> {
     return (
       <div className="graph" >
         <Line
-          data={this.props.scoreStore.data}
+          data={this.props.enginesStore.data}
           options={{
             responsive: true,
             animation: {
@@ -54,7 +54,7 @@ export default class Graph extends React.Component<GraphProps, {}> {
                 }
               ]
             }
-	      }}
+          }}
         />
       </div>
     );
