@@ -11,7 +11,7 @@ export default class EngineProcessor {
   constructor(configs: EngineConfig[]) {
     this.processes = configs.map<[string, USI]>(config => {
       const cwd = dirname(config.path);
-      return [config.id, USI.connect(config.path, [], {cwd})];
+      return [config.id, USI.connect2(config.path, [], {cwd})];
     });
   }
 
