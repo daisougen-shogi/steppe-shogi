@@ -2,14 +2,17 @@
 import {JKFPlayer, Formats} from "json-kifu-format";
 import {decorate, observable} from "mobx";
 import {IpcRenderer} from "electron";
+import {HIRATE} from "../constants";
 
 export default class KifuStore {
   signature = Math.random();
   @observable filePath: string;
   @observable private _player: JKFPlayer;
   private ipc: IpcRenderer;
+  @observable preset: string;
 
   constructor(ipc: IpcRenderer) {
+    this.preset = HIRATE;
     this.player = new JKFPlayer({header: {}, moves: [{}]});
     this.ipc = ipc;
   }
@@ -59,6 +62,11 @@ export default class KifuStore {
 
   load(path: string) {
     this.ipc.send("kifu:load", path);
+  }
+
+  handicap(preset: string) {
+    this.preset = preset;
+    this.player = new JKFPlayer({header: {}, initial: {preset}, moves: [{}]});
   }
 
   private takeOver(newPlayer: JKFPlayer, current: JKFPlayer) {

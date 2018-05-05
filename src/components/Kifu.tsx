@@ -10,6 +10,7 @@ import Hand from "./Hand";
 import Board from "./Board";
 import List from "./List";
 import Engines from "./Engines";
+import Handicap from "./Handicap";
 
 import "../steppe.css";
 
@@ -47,6 +48,7 @@ class Kifu extends React.Component<KifuProps, {}> {
                 <div className="inlineblock players">
                   <Hand kifuStore={this.props.kifuStore} defaultColor={1} />
                   <List player={this.props.kifuStore.player} />
+                  <Handicap kifuStore={this.props.kifuStore} />
                 </div>
               </td>
               <td>

@@ -78,6 +78,10 @@
   font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
 }
 
+.steppe div.players select.handicap {
+  width: 100%;
+}
+
 .steppe div.engines {
   width: 100%;
   display: flex;
