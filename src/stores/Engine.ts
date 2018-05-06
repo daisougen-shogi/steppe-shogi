@@ -3,17 +3,25 @@ import {observable, computed} from "mobx";
 import * as protocol from "../USIProtocol";
 import {EngineConfig} from "../config";
 import {usiok, readyok, unknown} from "../constants";
+import {Score} from "../Score";
 
 export default class Engine {
   readonly id: string;
   readonly name: string;
   readonly color: string;
+  @observable scores: Score[];
   @observable private _state: protocol.USIProtocol;
 
   constructor(config: EngineConfig) {
     this.id = config.id;
     this.name = config.name;
     this.color = config.color;
+    this.scores = [
+      {
+        turn: 0,
+        value: 0
+      }
+    ];
     this._state = {
       type: "unknown"
     };

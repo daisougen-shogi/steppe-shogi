@@ -1,11 +1,14 @@
 "use strict";
 import {inject, observer} from "mobx-react";
 import * as React from "react";
-import {Line} from "react-chartjs-2";
+import {LineChart, XAxis, YAxis} from "recharts";
+// LineProps.dataがd.tsに定義されていないので苦肉の策
+var Line = require("recharts").Line;
 import EnginesStore from "../stores/EnginesStore";
+import Engine from "../stores/Engine";
 
 export interface GraphProps {
-  enginesStore?: EnginesStore
+  engines: Engine[]
 }
 
 @inject("enginesStore")
@@ -15,47 +18,31 @@ export default class Graph extends React.Component<GraphProps, {}> {
   render() {
     return (
       <div className="graph" >
-        <Line
-          data={this.props.enginesStore.data}
-          options={{
-            responsive: true,
-            animation: {
-              duration: 0
-            },
-            maintainAspectRatio: false,
-            elements: {
-              point: {
-                radius: 0
-              }
-            },
-            scales: {
-              xAxes: [
-                {
-                  type: "linear",
-                  position: "bottom",
-                  ticks: {
-                    callback: (value: number) => {return ((value % 10) == 0)? value : ""},
-                    min: 0,
-                    max: 100,
-                    gridLines: {
-                      display: false
-                    }
-                  }
-                }
-              ],
-              yAxes: [
-                {
-                  ticks: {
-                    callback: (value: number) => {return ((value % 500) == 0)? value : ""},
-                    beginAtZero: true,
-                    min: -5000,
-                    max: 5000,
-                  }
-                }
-              ]
-            }
-          }}
-        />
+        <LineChart width={400} height={600} >
+          <XAxis
+            dataKey="turn"
+            type="number"
+            ticks={[0, 20, 40, 60, 80, 100]}
+          />
+          <YAxis
+            dataKey="value"
+            ticks={[-5000, -4000, -3000, -2000, -1000, 0, 1000, 2000, 3000, 4000, 5000]}
+          />
+          { this.props.engines.map((engine: Engine) => (
+            <Line
+              key={engine.id}
+              name={engine.name}
+              type="linear"
+              dataKey="value"
+              data={engine.scores.slice()}
+              stroke={engine.color}
+              strokeWidth="2"
+              dot={false}
+              activeDot={false}
+              isAnimationActive={false}
+            />
+          ))}
+        </LineChart>
       </div>
     );
   }

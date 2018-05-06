@@ -1,7 +1,8 @@
-import {observer} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import * as React from "react";
 import Kifu from "./Kifu";
 import Graph from "./Graph";
+import EnginesStore from "../stores/EnginesStore";
 
 const style = {
   display: "flex",
@@ -9,8 +10,10 @@ const style = {
 }
 
 export interface ShogiProps {
+  enginesStore?: EnginesStore
 }
 
+@inject("enginesStore")
 @observer
 export default class Shogi extends React.Component<ShogiProps, {}> {
 
@@ -18,7 +21,7 @@ export default class Shogi extends React.Component<ShogiProps, {}> {
     return (
       <div style={style}>
         <Kifu />
-        <Graph />
+        <Graph engines={this.props.enginesStore.engines} />
       </div>
     )
   }
