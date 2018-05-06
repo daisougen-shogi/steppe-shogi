@@ -9,7 +9,6 @@ import {Score} from "../Score";
 
 export default class EnginesStore {
   engines: Engine[];
-  configs: EngineConfig[];
   @observable private scores: Map<string, Score[]>;
   private ipc: IpcRenderer;
 
