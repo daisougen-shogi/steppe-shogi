@@ -17,6 +17,15 @@ export const createMenu = (mainWindow: Electron.BrowserWindow) => {
     {
       label: "ファイル",
       submenu: fileSubmenu
+    },
+    {
+      label: "対局",
+      submenu: [
+        {
+          label: "新規対局",
+          click: () => mainWindow.webContents.send("shogi:new-game")
+        }
+      ]
     }
   ];
 
