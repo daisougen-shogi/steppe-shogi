@@ -40,35 +40,21 @@ class Kifu extends React.Component<KifuProps, {}> {
 
   render(): React.ReactNode {
     return this.props.connectDropTarget(
-      <div>
-        <table className="steppe">
-          <tbody>
-            <tr>
-              <td>
-                <div className="inlineblock players">
-                  <Hand kifuStore={this.props.kifuStore} defaultColor={1} />
-                  <List player={this.props.kifuStore.player} />
-                  <Handicap kifuStore={this.props.kifuStore} />
-                </div>
-              </td>
-              <td>
-                <Board kifuStore={this.props.kifuStore} />
-              </td>
-              <td>
-                <div className="inlineblock players">
-                  <Hand kifuStore={this.props.kifuStore} defaultColor={0} />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3} style={{ textAlign: "center" }}>
-                <Engines />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="steppe" >
+        <div className="board-set" >
+          <div className="inlineblock players left">
+            <Hand kifuStore={this.props.kifuStore} defaultColor={1} />
+            <List player={this.props.kifuStore.player} />
+            <Handicap kifuStore={this.props.kifuStore} />
+          </div>
+          <Board kifuStore={this.props.kifuStore} />
+          <div className="inlineblock players right">
+            <Hand kifuStore={this.props.kifuStore} defaultColor={0} />
+          </div>
+        </div>
+        <Engines />
       </div>
-    )
+    );
   }
 }
 
