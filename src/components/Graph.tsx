@@ -1,7 +1,7 @@
 "use strict";
 import {inject, observer} from "mobx-react";
 import * as React from "react";
-import {LineChart, XAxis, YAxis} from "recharts";
+import {LineChart, XAxis, YAxis, Legend} from "recharts";
 // LineProps.dataがd.tsに定義されていないので苦肉の策
 var Line = require("recharts").Line;
 import EnginesStore from "../stores/EnginesStore";
@@ -42,6 +42,7 @@ export default class Graph extends React.Component<GraphProps, {}> {
               isAnimationActive={false}
             />
           ))}
+          <Legend />
         </LineChart>
       </div>
     );
