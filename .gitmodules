@@ -1,3 +1,3 @@
-[submodule "node_usi"]
-	path = node_usi
-	url = https://github.com/deflis/node_usi.git
+[submodule "node-usi"]
+	path = node-usi
+	url = git@github.com:daisougen-shogi/node-usi.git

@@ -14,7 +14,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pocketberserker/steppe-shogi"
+    "url": "https://github.com/daisougen-shogi/steppe-shogi"
   },
   "dependencies": {
     "json-kifu-format": "^1.2.1",

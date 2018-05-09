@@ -1,7 +1,7 @@
 "use strict";
 import {ipcMain as ipc} from "electron";
 import {dirname, basename} from "path";
-import USI from "../node_usi/src/index";
+import USI from "../node-usi/src/index";
 import {EngineConfig} from "./config";
 
 export default class EngineProcessor {
