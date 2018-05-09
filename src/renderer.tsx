@@ -67,7 +67,7 @@ w.ipc.on("shogi:apply-kifu", (_: any, kifu: string, path: string) =>
 
 w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
 
-w.ipc.on("shogi:new-game", () => {
+w.ipc.on("shogi:init", () => {
   kifuStore.clear();
 });
 
