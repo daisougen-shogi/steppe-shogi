@@ -16,6 +16,7 @@ export interface Info {
   time?: number; // ms
   nodes?: number;
   pv?: string[];
+  multipv?: number;
   centipawn?: number;
   // 将棋所は数値ではなく '+' や '-' のみの場合があるらしい
   mate?: number | "+" | "-";
@@ -56,6 +57,7 @@ export const parseInfo = (values: string[]) => {
       case "depth":
       case "time":
       case "nodes":
+      case "multipv":
       case "hashfull":
       case "nps":
         info[token] = parseInt(tokens.pop(), 10);

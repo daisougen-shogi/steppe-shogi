@@ -28,6 +28,9 @@ export default class Engine {
   }
 
   set state(state: protocol.USIProtocol) {
+    if (this._state.type === "info" && state.type === "info" && this._state.multipv <= state.multipv) {
+      return;
+    }
     this._state = state;
   }
 

@@ -36,6 +36,13 @@ describe("USIProtocol", () => {
     });
   });
 
+  test("multipv", () => {
+    expect(parseInfo(["info", "multipv", "1"])).toEqual({
+      type: "info",
+      multipv: 1
+    });
+  });
+
   test("score cp lowerbound", () => {
     expect(parseInfo(["info", "score", "cp", "1", "lowerbound"])).toEqual({
       type: "info",
