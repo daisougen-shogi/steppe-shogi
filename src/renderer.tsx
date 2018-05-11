@@ -71,6 +71,8 @@ w.ipc.on("shogi:init", () => {
   kifuStore.clear();
 });
 
+w.ipc.on("shogi:start", () => kifuStore.start());
+
 w.ipc.on("engine:response", (_: any, id: string, response: USIProtocol) => {
   enginesStore.apply(id, response, kifuStore.player.tesuu);
 });

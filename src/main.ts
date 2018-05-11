@@ -78,7 +78,7 @@ app.once("ready", async () => {
     (global as any).config = config;
     engine = new EngineProcessor(config.engines);
     createWindow(baseDir, config);
-    createMenu(mainWindow, engine);
+    createMenu(mainWindow);
   } catch (e) {
     console.error("Unknown error: ", e);
     if (engine) {

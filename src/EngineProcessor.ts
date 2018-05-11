@@ -34,8 +34,8 @@ export default class EngineProcessor {
       await this.ready(id);
     });
 
-    ipc.on("engine:new-game", async () => {
-      this.newGame();
+    ipc.on("engine:new-game", async (_: any, sfen: string) => {
+      this.newGame(sfen);
     });
 
     ipc.on("engine:command", async (_: any, command: string) => {
@@ -49,10 +49,10 @@ export default class EngineProcessor {
     }
   }
 
-  async newGame() {
+  async newGame(sfen: string) {
     for (const [_, p] of this.processes) {
       await p.newGame();
-      await p.positionStartPos([]);
+      await p.positionSfen(sfen, []);
       await p.go([]);
     }
   }

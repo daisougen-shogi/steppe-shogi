@@ -2,7 +2,7 @@
 import {app, Menu, MenuItemConstructorOptions} from "electron";
 import EngineProcessor from "./EngineProcessor";
 
-export const createMenu = (mainWindow: Electron.BrowserWindow, engine: EngineProcessor) => {
+export const createMenu = (mainWindow: Electron.BrowserWindow) => {
   const fileSubmenu: MenuItemConstructorOptions[] = [
     {
       label: "棋譜ファイルを開く",
@@ -28,7 +28,7 @@ export const createMenu = (mainWindow: Electron.BrowserWindow, engine: EnginePro
         },
         {
           label: "対局開始",
-          click: async () => engine.newGame()
+          click: async () => mainWindow.webContents.send("shogi:start")
         }
       ]
     }

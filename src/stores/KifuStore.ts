@@ -73,6 +73,10 @@ export default class KifuStore {
     this.player = new JKFPlayer({header: {}, moves: [{}]});
   }
 
+  start() {
+    this.ipc.send("engine:new-game", this._player.shogi.toSFENString());
+  }
+
   private takeOver(newPlayer: JKFPlayer, current: JKFPlayer) {
     const tesuu = current.tesuu === current.getMaxTesuu() ? Infinity : current.tesuu;
     newPlayer.goto(tesuu);
