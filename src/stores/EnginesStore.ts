@@ -9,7 +9,6 @@ import {Score} from "../Score";
 
 export default class EnginesStore {
   engines: Engine[];
-  @observable private scores: Map<string, Score[]>;
   private ipc: IpcRenderer;
 
   constructor(ipc: IpcRenderer, configs: EngineConfig[]) {
@@ -32,6 +31,13 @@ export default class EnginesStore {
 
   usi() {
     this.ipc.send("engine:usi");
+  }
+
+  clear() {
+    for (const e of this.engines) {
+      e.scores = [];
+    }
+    this.ipc.send("engine:game-over");
   }
 
   private ready(id: string) {

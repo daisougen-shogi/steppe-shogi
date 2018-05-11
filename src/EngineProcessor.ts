@@ -39,6 +39,10 @@ export default class EngineProcessor {
       this.newGame(sfen);
     });
 
+    ipc.on("engine:game-over", async () => {
+      this.end();
+    });
+
     ipc.on("engine:command", async (_: any, command: string) => {
       await this.send(command);
     });
@@ -80,5 +84,13 @@ export default class EngineProcessor {
 
   private sendRenderer(channel: string, id: string, protocol: USIProtocol) {
     this.sender.send(channel, id, protocol);
+  }
+
+  private async end() {
+    for (const [id, p] of this.processes) {
+      // 勝敗はダミーでよい?
+      await p.gameOver("draw");
+      await this.ready(id);
+    }
   }
 }

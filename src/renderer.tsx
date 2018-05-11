@@ -69,6 +69,7 @@ w.ipc.on("shogi:save-kifu", () => chooseSaveFile());
 
 w.ipc.on("shogi:init", () => {
   kifuStore.clear();
+  enginesStore.clear();
 });
 
 w.ipc.on("shogi:start", () => kifuStore.start());
