@@ -6,6 +6,7 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "webpack --progress",
+    "test": "jest",
     "start": "npm run build && electron .",
     "precommit": "lint-staged",
     "postcommit": "git reset"
@@ -30,6 +31,7 @@
     "rxjs-compat": "^6.1.0"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "@types/node": "^10.0.2",
     "@types/react": "^16.3.13",
     "@types/react-dnd": "^2.0.36",
@@ -41,9 +43,11 @@
     "css-loader": "^0.28.11",
     "electron": "^1.8.6",
     "husky": "^0.14.3",
+    "jest": "^22.4.3",
     "lint-staged": "^7.0.5",
     "prettier": "^1.12.1",
     "style-loader": "^0.21.0",
+    "ts-jest": "^22.4.5",
     "ts-loader": "^4.2.0",
     "typescript": "2.8.3",
     "webpack": "^4.6.0",
@@ -57,6 +61,19 @@
     "**/*.{ts, tsx, js, json, css}": [
       "prettier --write",
       "git add"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/__tests__/*.(ts|tsx|js)"
     ]
   }
 }

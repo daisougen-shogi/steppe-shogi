@@ -5,6 +5,7 @@ import {Observable, Subscription} from "rxjs";
 import USI from "../node-usi/src/index";
 import * as constants from "./constants";
 import {EngineConfig} from "./config";
+import {USIProtocol, parseInfo} from "./USIProtocol";
 
 export default class EngineProcessor {
   private sender: Electron.WebContents;
@@ -19,7 +20,7 @@ export default class EngineProcessor {
 
     const info = this.processes.map(([id, p]) => p.info.map<string[], [string, string[]]>(vs => [id, vs]));
     this.subscription = Observable.merge(...info).subscribe(([id, values]) => {
-      this.sender.send("engine:response", id, {type: constants.info, values});
+      this.sendRenderer("engine:response", id, parseInfo(values));
     });
   }
 
@@ -67,13 +68,17 @@ export default class EngineProcessor {
   private async init() {
     for (const [id, p] of this.processes) {
       await p.init();
-      this.sender.send("engine:response", id, {type: constants.usiok});
+      this.sendRenderer("engine:response", id, {type: constants.usiok});
     }
   }
 
   private async ready(id: string) {
     const [_, p] = this.processes.find(([i, _]) => i === id);
     await p.ready();
-    this.sender.send("engine:response", id, {type: constants.readyok});
+    this.sendRenderer("engine:response", id, {type: constants.readyok});
+  }
+
+  private sendRenderer(channel: string, id: string, protocol: USIProtocol) {
+    this.sender.send(channel, id, protocol);
   }
 }
