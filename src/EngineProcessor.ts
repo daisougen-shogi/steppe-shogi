@@ -36,11 +36,15 @@ export default class EngineProcessor {
     });
 
     ipc.on("engine:new-game", async (_: any, sfen: string) => {
-      this.newGame(sfen);
+      await this.newGame(sfen);
+    });
+
+    ipc.on("engine:next", async (_: any, sfen: string) => {
+      await this.next(sfen);
     });
 
     ipc.on("engine:game-over", async () => {
-      this.end();
+      await this.end();
     });
 
     ipc.on("engine:command", async (_: any, command: string) => {
@@ -84,6 +88,14 @@ export default class EngineProcessor {
 
   private sendRenderer(channel: string, id: string, protocol: USIProtocol) {
     this.sender.send(channel, id, protocol);
+  }
+
+  private async next(sfen: string) {
+    for (const [_, p] of this.processes) {
+      await p.stop();
+      await p.positionSfen(sfen, []);
+      await p.go([]);
+    }
   }
 
   private async end() {

@@ -54,6 +54,7 @@ export default class KifuStore {
         move.promote = confirm("成りますか？");
         this.player.inputMove(move);
       }
+      this.ipc.send("engine:next", this._player.shogi.toSFENString());
     } catch (e) {
       // json-kifu-formatで反則手を指した場合例外が投げられる。
       // 例外を握りつぶせばなかったことになるらしい。

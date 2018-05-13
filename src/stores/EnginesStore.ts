@@ -4,7 +4,7 @@ import {IpcRenderer} from "electron";
 import Engine from "./Engine";
 import * as protocol from "../USIProtocol";
 import {EngineConfig} from "../config";
-import {usiok, readyok, unknown} from "../constants";
+import * as constants from "../constants";
 import {Score} from "../Score";
 
 export default class EnginesStore {
@@ -20,11 +20,16 @@ export default class EnginesStore {
     const engine = this.engines.find(e => e.id === id);
     engine.state = response;
     switch (response.type) {
-      case usiok:
+      case constants.usiok:
         this.ready(id);
         return;
-      case readyok:
-      case unknown:
+      case constants.info:
+        if ("centipawn" in response) {
+          this.addScore(engine, turn, response.centipawn);
+        }
+        return;
+      case constants.readyok:
+      case constants.unknown:
         return;
     }
   }

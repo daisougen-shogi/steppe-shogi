@@ -19,7 +19,7 @@ export default class Engine extends React.Component<EngineProps, {}> {
       case constants.readyok:
         return [<p>"準備完了"</p>];
       case constants.info:
-        return state.pv.map((v, i) => <p key={i} >{v}</p>);
+        return state.pv.slice().map((v, i) => <p key={i} >{v}</p>);
       case constants.unknown:
         return [<p>"Unknown"</p>];
     }
