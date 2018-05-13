@@ -8,6 +8,14 @@ describe("USIProtocol", () => {
     });
   });
 
+  test("seldepth", () => {
+    expect(parseInfo(["info", "depth", "1", "seldepth", "2"])).toEqual({
+      type: "info",
+      depth: 1,
+      seldepth: 2
+    });
+  });
+
   test("time", () => {
     expect(parseInfo(["info", "time", "1"])).toEqual({
       type: "info",

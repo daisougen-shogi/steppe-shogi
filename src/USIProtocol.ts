@@ -13,6 +13,7 @@ export interface ReadyOk {
 export interface Info {
   type: "info";
   depth?: number;
+  seldepth?: number;
   time?: number; // ms
   nodes?: number;
   pv?: string[];
@@ -26,17 +27,21 @@ export interface Info {
   string?: string;
 }
 
+const readToken = (tokens: string[]) => {
+  return tokens.shift();
+};
+
 const parseScore = (info: Info, tokens: string[]) => {
-  if (tokens.shift() === "cp") {
-    info.centipawn = parseInt(tokens.shift(), 10);
+  if (readToken(tokens) === "cp") {
+    info.centipawn = parseInt(readToken(tokens), 10);
 
     // TODO: lowerbound|upperboundの扱いを決める
     const next = tokens[0];
     if (next === "lowerbound" || next === "upperbound") {
-      tokens.shift();
+      readToken(tokens);
     }
   } else {
-    const value = tokens.shift();
+    const value = readToken(tokens);
     if (value === "+" || value === "-") {
       info.mate = value;
     } else {
@@ -55,15 +60,21 @@ export const parseInfo = (values: string[]) => {
     let token = tokens.shift();
     switch (token) {
       case "depth":
+        info[token] = parseInt(readToken(tokens), 10);
+        if (tokens[0] === "seldepth") {
+          readToken(tokens);
+          info.seldepth = parseInt(readToken(tokens), 10);
+        }
+        break;
       case "time":
       case "nodes":
       case "multipv":
       case "hashfull":
       case "nps":
-        info[token] = parseInt(tokens.pop(), 10);
+        info[token] = parseInt(readToken(tokens), 10);
         break;
       case "currmove":
-        info[token] = tokens.pop();
+        info[token] = readToken(tokens);
         break;
       case "score":
         parseScore(info, tokens);
