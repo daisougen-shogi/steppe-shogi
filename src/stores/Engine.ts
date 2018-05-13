@@ -31,6 +31,9 @@ export default class Engine {
     if (this._state.type === "info" && state.type === "info" && this._state.multipv <= state.multipv) {
       return;
     }
+    if (state.type === "info" && "pv" in state === false) {
+      state.pv = [];
+    }
     this._state = state;
   }
 
